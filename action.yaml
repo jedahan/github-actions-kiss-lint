@@ -5,7 +5,7 @@ branding:
   icon: 'moon'  
   color: 'blue'
 inputs:
-  kiss_path:
+  kisspath:
     description: ':-delimited list of paths to check, relative to the repository root'
     required: false
     default: '.'
@@ -24,4 +24,4 @@ runs:
         echo ::endgroup::
       shell: bash
       env:
-        INPUT_KISS_PATH: inputs.kiss_path
+        INPUT_KISS_PATH: ${{ github.event.inputs.kisspath }}
