@@ -28,5 +28,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/kiss-lint
         with:
-          kiss-path: core:extra:wayland
+          kisspath: core:extra:wayland
 ```

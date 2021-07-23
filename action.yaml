@@ -9,26 +9,16 @@ inputs:
     description: :-delimited list of paths to check, relative to the repository root
     required: true
     default: '.'
-  stupid:
-    description: no u
-    required: false
-    default: dot
 runs:
   using: 'composite'
   steps:
     - run: |
         echo ::group::linting...
-        echo INPUTS_STUPID is $INPUTS_STUPID
-        echo INPUTS_KISS_PATH is $INPUTS_KISS_PATH
-        echo inputs.kisspath is ${{ inputs.kisspath }}
-        export KISS_PATH=$(echo $INPUTS_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
-        echo kiss_path is $KISS_PATH
+        export KISS_PATH=$(echo ${{ inputs.kisspath }} | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
           | /usr/bin/bash 2>&1 | sed -e 's|^.*error: |error |' -e 's|^.*warning: |warning|')
-        echo $output && test -z "$output"
+        echo $output
         echo ::endgroup::
+        test -z "$output"
       shell: bash
-      env:
-        INPUTS_KISS_PATH: ${{ inputs.kisspath }}
-        INPUTS_STUPID: ${{ inputs.stupid }}
