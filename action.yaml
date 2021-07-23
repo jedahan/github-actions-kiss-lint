@@ -18,7 +18,7 @@ runs:
         export KISS_PATH=$(echo ${{ inputs.kisspath }})
         echo ::info::checking $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
-          https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
+          https://raw.githubusercontent.com/jedahan/kiss-repo/7a4ac90b0fc8b101c46623553e79b0ccd7bcdcb8/kiss-lint/files/kiss-lint \
           | /usr/bin/bash |& /usr/bin/sed -r 's#^(warning|error) ([a-z./]+) (.*)#::\1 file=\{\2\}::\3#'; true)
         echo $output
         test -z "$output"
