@@ -14,8 +14,9 @@ runs:
   steps:
     - run: |
         echo ::group::linting...
-        echo ::INPUT_KISS_PATH is $INPUT_KISS_PATH
-        export KISS_PATH=$(echo $INPUT_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        echo ::INPUTS_KISS_PATH is $INPUTS_KISS_PATH
+        /usr/bin/sed --version
+        export KISS_PATH=$(echo $INPUTS_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
         echo ::kiss_path is $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
@@ -24,4 +25,4 @@ runs:
         echo ::endgroup::
       shell: bash
       env:
-        INPUT_KISS_PATH: ${{ github.event.inputs.kisspath }}
+        INPUTS_KISS_PATH: ${{ inputs.kisspath }}
