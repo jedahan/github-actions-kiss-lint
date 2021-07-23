@@ -6,22 +6,23 @@ branding:
   color: 'blue'
 inputs:
   kisspath:
-    description: ':-delimited list of paths to check, relative to the repository root'
-    required: false
+    description: :-delimited list of paths to check, relative to the repository root
+    required: true
     default: '.'
   stupid:
-    description: 'no u'
+    description: no u
     required: false
-    default: 'dot'
+    default: dot
 runs:
   using: 'composite'
   steps:
     - run: |
         echo ::group::linting...
-        echo ::INPUTS_STUPID is $INPUTS_STUPID
-        echo ::INPUTS_KISS_PATH is $INPUTS_KISS_PATH
+        echo INPUTS_STUPID is $INPUTS_STUPID
+        echo INPUTS_KISS_PATH is $INPUTS_KISS_PATH
+        echo inputs.kisspath is ${{ inputs.kisspath }}
         export KISS_PATH=$(echo $INPUTS_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
-        echo ::kiss_path is $KISS_PATH
+        echo kiss_path is $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
           | /usr/bin/bash 2>&1 | sed -e 's|^.*error: |error |' -e 's|^.*warning: |warning|')
