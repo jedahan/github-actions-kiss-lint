@@ -17,7 +17,8 @@ runs:
       env:
         INPUT_KISS_PATH: ${{ inputs.kiss-path }}
       run: |
-        export KISS_PATH=$(echo $INPUT_KISS_PATH | sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        export KISS_PATH=$(echo $INPUT_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        echo ::warning::kiss path is $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
           | /usr/bin/bash 2>&1 | sed -e 's|^.*error: |::error::|' -e 's|^.*warning: |::warning::|')
