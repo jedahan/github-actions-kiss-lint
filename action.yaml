@@ -15,11 +15,11 @@ runs:
     - run: |
         echo does this show
         cd $GITHUB_WORKSPACE
-        export KISS_PATH=${{ inputs.kisspath }}
+        export KISS_PATH=$(echo ${{ inputs.kisspath }})
         echo ::info::checking $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
-          | /usr/bin/bash 2>&1 | /usr/bin/sed -E 's|^.* error: (.*): (.+)|::error file=\{\1\}::\1: \2|; s|^.*warning: |::warning ::|'; true)
+          | /usr/bin/bash 2>&1 | /usr/bin/sed -E 's|^.* (error|warning): (.*): (.+)|::\1 file=\{\2\}::\2: \3|'; true)
         echo $output
         test -z "$output"
       shell: bash
