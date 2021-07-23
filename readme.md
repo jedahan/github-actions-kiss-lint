@@ -1,39 +1,32 @@
-### For top-level repository
+### With a top-level repository
 
 
 ```yaml
 #.github/workflow/lint.yaml
-name: lint packages
-
-on:
-  pull_request:
-  workflow_dispatch:
+on: [pull_request, workflow_dispatch]
 
 jobs:
-  lint_packages:
+  lint:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: lint some packages
-        uses: actions/kiss-lint
+      - uses: actions/checkout@v2
+      - uses: actions/kiss-lint
 ```
 
 ### For multiple subdirectories
 
 ```yaml
 #.github/workflow/lint.yaml
-name: lint packages
-
-on:
-  pull_request:
-  workflow_dispatch:
+on: [pull_request, workflow_dispatch]
 
 jobs:
-  lint_packages:
+  lint:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: lint some packages
-        uses: actions/kiss-lint
-        kiss_path: core:extra:wayland
+      - uses: actions/checkout@v2
+      - uses: actions/kiss-lint
+        with:
+          kiss-path: core:extra:wayland
 ```

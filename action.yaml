@@ -12,9 +12,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: checkout code
-      uses: actions/checkout@v2
-
     - name: find packages with bad lints
       id: lint-packages
       env:
