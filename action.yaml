@@ -9,13 +9,17 @@ inputs:
     description: ':-delimited list of paths to check, relative to the repository root'
     required: false
     default: '.'
+  stupid:
+    description: 'no u'
+    required: false
+    default: 'dot'
 runs:
   using: 'composite'
   steps:
     - run: |
         echo ::group::linting...
+        echo ::INPUTS_STUPID is $INPUTS_STUPID
         echo ::INPUTS_KISS_PATH is $INPUTS_KISS_PATH
-        /usr/bin/sed --version
         export KISS_PATH=$(echo $INPUTS_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
         echo ::kiss_path is $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
@@ -26,3 +30,4 @@ runs:
       shell: bash
       env:
         INPUTS_KISS_PATH: ${{ inputs.kisspath }}
+        INPUTS_STUPID: ${{ inputs.stupid }}
