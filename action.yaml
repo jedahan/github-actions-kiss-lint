@@ -15,7 +15,7 @@ runs:
     - name: find packages with bad lints
       id: lint-packages
       env:
-        INPUT_KISS_PATH: ${{ inputs.kiss-path }}
+        INPUT_KISS_PATH: ${{ github.event.inputs.kiss-path }}
       run: |
         echo ::warning::input_kiss_path is $INPUT_KISS_PATH
         export KISS_PATH=$(echo $INPUT_KISS_PATH | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
