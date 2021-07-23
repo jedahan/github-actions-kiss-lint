@@ -14,14 +14,12 @@ runs:
   steps:
     - run: |
         echo does this show
-        echo ::info:: does info show
-        echo ::warning:: does warning show
-        echo ::error::  does error show
         export KISS_PATH=$(echo ${{ inputs.kisspath }} | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        echo ::info::checking $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
-         | /usr/bin/bash |& sed -e 's|^.*error: \([a-zA-Z/\.]\)+: |::info file={\1}::|' -e 's|^.*warning: |::warning ::|')
+         | /usr/bin/bash 2>&1| /usr/bin/sed -E 's|^.* error: (.*): (.+)|::error file=\{\1\}::\2|; s|^.*warning: |::warning ::|')
         echo $output
-        echo wow
+        echo ::info::wow
         test -z "$output"
       shell: bash
