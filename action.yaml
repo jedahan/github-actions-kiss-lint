@@ -18,7 +18,8 @@ runs:
         echo ::info::checking $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
-         | /usr/bin/bash 2>&1| /usr/bin/sed -E 's|^.* error: (.*): (.+)|::error file=\{\1\}::\2|; s|^.*warning: |::warning ::|')
+         | /usr/bin/bash 2>&1 | /usr/bin/sed -E 's|^.* error: (.*): (.+)|::error file=\{\1\}::\2|; s|^.*warning: |::warning ::|'; true)
+        echo ::info::failed early
         echo $output
         echo ::info::wow
         test -z "$output"
