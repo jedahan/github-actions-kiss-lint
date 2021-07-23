@@ -1,0 +1,27 @@
+name: kiss-lint
+author: jedahan
+description: run kiss-lint on your kiss repositories
+branding:
+  icon: 'moon'  
+  color: 'blue'
+inputs:
+  kiss_path:
+    description: ':-delimited list of paths to check, relative to the repository root'
+    required: false
+    default: '.'
+runs:
+  using: "composite"
+  steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+
+    - name: find packages with bad lints
+      id: lint-packages
+      env:
+        INPUT_KISS_PATH: ${{ inputs.kiss_path }}
+      run: |
+        export KISS_PATH=$(echo $INPUT_KISS_PATH | sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        output=$(/usr/bin/curl --silent --location \
+          https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
+          | /usr/bin/bash 2>&1 | sed -e 's|^.*error: |::error::|' -e 's|^.*warning: |::warning::|')
+        echo $output && test -z "$output"
