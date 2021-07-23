@@ -15,10 +15,12 @@ runs:
     - name: find packages with bad lints
       id: lint-packages
       run: |
-        echo ::warning::input-kiss-path is ${{ github.event.inputs.kiss-path }}
-        echo ::warning::input_kiss_path is ${{ github.event.inputs.kiss_path }}
-        export KISS_PATH=$(echo ${{ github.event.inputs.kiss_path }} | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        echo ::warning::input-kiss-path is ${{ inputs.kiss-path }}
+        echo ::warning::input_kiss_path is ${{ inputs.kiss_path }}
+        export KISS_PATH=$(echo ${{ inputs.kiss-path }} | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
+        export KISS_PATH_=$(echo ${{ inputs.kiss_path }} | /usr/bin/sed -e "s|^|${GITHUB_WORKSPACE}/|" -e "s|:|:${GITHUB_WORKSPACE}/|")
         echo ::warning::kiss_path is $KISS_PATH
+        echo ::warning::kiss_path_ is $KISS_PATH_
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/1370e9d22452e0646fcfa777c54747848038a0c5/kiss-lint/files/kiss-lint \
           | /usr/bin/bash 2>&1 | sed -e 's|^.*error: |::error::|' -e 's|^.*warning: |::warning::|')
