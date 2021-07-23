@@ -24,4 +24,4 @@ runs:
         echo ::endgroup::
       shell: bash
       env:
-        INPUT_KISS_PATH: ${{ inputs.kiss_path }}
+        INPUT_KISS_PATH: inputs.kiss_path
