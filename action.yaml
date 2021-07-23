@@ -13,13 +13,10 @@ runs:
   using: 'composite'
   steps:
     - run: |
-        echo does this show
         cd $GITHUB_WORKSPACE
         export KISS_PATH=$(echo ${{ inputs.kisspath }})
-        echo ::info::checking $KISS_PATH
         output=$(/usr/bin/curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/7a4ac90b0fc8b101c46623553e79b0ccd7bcdcb8/kiss-lint/files/kiss-lint \
-          | /usr/bin/bash |& /usr/bin/sed -r 's#^(warning|error) ([a-z./]+) (.*)#::\1 file=\{\2\}::\3#'; true)
-        echo $output
-        test -z "$output"
+          | /usr/bin/bash |& /usr/bin/sed -r 's#^(warning|error) ([a-z./]+) (.*)#::\1 file=\{\2\}::\2: \3#'; true)
+        echo $output && test -z "$output"
       shell: bash
