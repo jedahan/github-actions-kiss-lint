@@ -12,11 +12,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: |
+    - shell: 'script -q -e -c "bash --noprofile --norc -eo pipefail {0}"'
+      run: |
         cd $GITHUB_WORKSPACE
         export KISS_PATH=$(echo ${{ inputs.kisspath }})
         output=$(curl --silent --location \
           https://raw.githubusercontent.com/jedahan/kiss-repo/60400666fdfe6e1f939e752eaa92039d43ada848/kiss-lint/files/kiss-lint \
           | bash |& sed -r 's#^(warning|error) ([a-z./]+) (.*)#::\1 file=\{\2\}::\2: \3#'; true)
         echo "$output" | tee /dev/stdout | grep --quiet --invert-match "^error"
-      shell: bash
