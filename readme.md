@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/kiss-lint
+      - uses: actions/kiss-lint@v3
 ```
 
 ### For multiple subdirectories
@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/kiss-lint
+      - uses: actions/kiss-lint@v3
         with:
           kisspath: core:extra:wayland
 ```
