@@ -17,7 +17,7 @@ runs:
         cd $GITHUB_WORKSPACE
         export KISS_PATH=$(echo ${{ inputs.kisspath }})
         output=$(curl --silent --location \
-          https://raw.githubusercontent.com/jedahan/kiss-repo/60400666fdfe6e1f939e752eaa92039d43ada848/kiss-lint/files/kiss-lint \
+          https://raw.githubusercontent.com/jedahan/kiss-repo/7c0beda186d48c0acd796582ee81d9ddeba5ccaf/kiss-lint/files/kiss-lint \
           | bash |& sed -r 's#^(warning|error) ([a-zA-Z0-9./]+) (.*)#::\1 file=\{\2\}::\2: \3#'; true)
         echo "$output"
-        if [ echo "$output" | grep --quiet 'error' ]; then false; fi
+        if [[ echo "$output" | grep --quiet 'error' ]]; then false; fi
